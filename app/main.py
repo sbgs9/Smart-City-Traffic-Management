@@ -18,6 +18,7 @@ from models import (
 )
 
 import MySQLdb
+import pymongo
 
 db_config = {
     'host': '127.0.0.1',
@@ -28,6 +29,11 @@ db_config = {
 }
 
 conn = MySQLdb.connect(**db_config)
+
+client = pymongo.MongoClient("mongodb://localhost:27017/", username='user', password='cmpe-281')
+db = client["smartCity"]
+
+iotAnalytics = db["iotAnalytics"]
 
 app = FastAPI(
     version='1.0.0',
@@ -243,10 +249,13 @@ def get_cameraimage_list() -> Union[List[Cameraimage], ErrorModel]:
     },
 )
 def add_iotanalytics(body: Iotanalytics) -> Union[None, ErrorModel]:
-    """
-    Creates new iotanalytics
-    """
-    pass
+    try:
+        iotData = body.dict()
+        result = iotAnalytics.insert_one(iotData)
+        if not result.inserted_id:
+            return ErrorModel(code=500, message="Failed to add IoT analytics data")
+    except Exception as e:
+        return ErrorModel(code=500, message=str(e))
 
 
 @app.get(
