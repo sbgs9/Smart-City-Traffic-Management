@@ -45,9 +45,9 @@ class Iotanalytics(BaseModel):
 
 
 class Servicerequest(BaseModel):
-    id: constr(min_length=3) = Field(..., example='int')
+    id: constr(min_length=1) = Field(..., example='int')
     date: constr(min_length=6) = Field(..., example='string')
     service: constr(min_length=6) = Field(..., example='string')
     description: constr(min_length=6) = Field(..., example='string')
-    devicetype: constr(min_length=6) = Field(..., example='string')
-    deviceid: constr(min_length=3) = Field(..., example='int')
+    deviceType: constr(min_length=6) = Field(..., example='string')
+    deviceId: constr(min_length=1) = Field(..., example='int')

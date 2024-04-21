@@ -233,7 +233,6 @@ def get_cameraimage_list() -> Union[List[Cameraimage], ErrorModel]:
     pass
 
 
-
 @app.post(
     '/iotanalytics',
     response_model=None,
@@ -354,7 +353,6 @@ def find_iotstation_byid(id: str) -> Union[Iotstation, ErrorModel]:
     return Iotstation(id=item[0], name=item[1], latitude=item[2], longitude=item[3], stationType=item[4])
 
 
-
 @app.delete(
     '/iotstation/{id}',
     response_model=None,
@@ -445,10 +443,19 @@ def add_servicerequest(body: Servicerequest) -> Union[None, ErrorModel]:
     },
 )
 def find_servicerequest_byid(id: str) -> Union[Servicerequest, ErrorModel]:
-    """
-    Returns servicerequest by id
-    """
-    pass
+    cursor = conn.cursor()
+    query = "SELECT * FROM serviceRequest WHERE id = %s;"
+    cursor.execute(query, [id])
+    item = cursor.fetchone()
+    cursor.close()
+    if item is None:
+        return ErrorModel(code=404, message="Service Request not found")
+    return Servicerequest(id=item[0],
+                          date=item[1],
+                          service=item[2],
+                          description=item[3],
+                          deviceType=item[4],
+                          deviceId=item[5])
 
 
 @app.delete(
@@ -479,7 +486,7 @@ def delete_servicerequest(id: str) -> Union[None, ErrorModel]:
     },
 )
 def update_servicerequest(
-    id: str, body: Servicerequest = ...
+        id: str, body: Servicerequest = ...
 ) -> Union[None, ErrorModel]:
     """
     Updates servicerequest by id
@@ -497,7 +504,25 @@ def update_servicerequest(
     },
 )
 def get_servicerequest_list() -> Union[List[Servicerequest], ErrorModel]:
-    """
-    List of servicerequests
-    """
-    pass
+    cursor = conn.cursor()
+    query = "SELECT * FROM serviceRequest;"
+    cursor.execute(query)
+    items = cursor.fetchall()
+    cursor.close()
+
+    if items is None:
+        return ErrorModel(code=404, message="Service Requests not found")
+
+    requests = []
+    for item in items:
+        servicerequest = Servicerequest(
+            id=item[0],
+            date=item[1],
+            service=item[2],
+            description=item[3],
+            deviceType=item[4],
+            deviceId=item[5]
+        )
+        requests.append(servicerequest)
+
+    return requests
