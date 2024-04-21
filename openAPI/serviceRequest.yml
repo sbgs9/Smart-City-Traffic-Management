@@ -1,0 +1,7 @@
+serviceRequest:
+  id: int
+  date: string
+  service: string
+  description: string
+  deviceType: string
+  deviceId: int

@@ -7,6 +7,7 @@ iotStation:
 
 iotAnalytics:
   iotId: int
+  timestamp: string
   totalFlow: float
   avgOccupancy: float
   avgSpeed: float

@@ -8,3 +8,9 @@ INSERT INTO smartCity.iotStation (id, name, latitude, longitude, stationType) VA
 (402294, '4A5324 Loc 1', '37.372054', '-121.916917', 'ML'),
 (409869, 'N of Old Monterey Rd UC', '37.34504', '-121.92384', 'ML'),
 (409875, 'SR 25 off', '37.274115', '-121.863716', 'FR');
+
+INSERT INTO smartCity.serviceRequest (date, service, description, deviceType, deviceId) VALUES
+('2023-04-21', 'Camera Maintenance', 'Clean camera lens', 'camera', 1),
+('2023-04-20', 'IoT Station Repair', 'Replace faulty sensor', 'iotStation', 402294),
+('2023-04-19', 'Camera Upgrade', 'Install new camera firmware', 'camera', 2),
+('2023-04-18', 'IoT Station Inspection', 'Routine maintenance check', 'iotStation', 409869);

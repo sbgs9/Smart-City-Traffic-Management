@@ -6,10 +6,10 @@ db = client["smartCity"]
 iotAnalytics = db["iotAnalytics"]
 
 iotList = [
-    {"iotId": 1, "totalFlow": 27.0, "avgOccupancy": 0.005, "avgSpeed": 70, "incidents": 147},
-    {"iotId": 2, "totalFlow": 24.0, "avgOccupancy": 0.0001, "avgSpeed": 80, "incidents": 500},
-    {"iotId": 3, "totalFlow": 22.0, "avgOccupancy": 0.04, "avgSpeed": 63, "incidents": 250},
-    {"iotId": 4, "totalFlow": 18.0, "avgOccupancy": 0.1, "avgSpeed": 65, "incidents": 600}
+    {"iotId": 1, "timestamp": "22:18:47-2023-08-23", "totalFlow": 27.0, "avgOccupancy": 0.005, "avgSpeed": 70, "incidents": 147},
+    {"iotId": 2, "timestamp": "22:18:47-2023-08-23", "totalFlow": 24.0, "avgOccupancy": 0.0001, "avgSpeed": 80, "incidents": 500},
+    {"iotId": 3, "timestamp": "22:18:47-2023-08-23", "totalFlow": 22.0, "avgOccupancy": 0.04, "avgSpeed": 63, "incidents": 250},
+    {"iotId": 4, "timestamp": "22:18:47-2023-08-23", "totalFlow": 18.0, "avgOccupancy": 0.1, "avgSpeed": 65, "incidents": 600}
 ]
 
 iotInsert = iotAnalytics.insert_many(iotList)

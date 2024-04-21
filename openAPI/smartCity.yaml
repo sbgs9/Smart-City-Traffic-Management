@@ -779,6 +779,199 @@ paths:
               $ref: '#/components/schemas/Iotanalytics'
         description: Iotanalytics to be updated
         required: true
+  /servicerequests:
+    get:
+      description: List of servicerequests.
+      summary: List of servicerequests
+      operationId: getServicerequestList
+      responses:
+        '200':
+          description: Servicerequest List
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Servicerequest'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /servicerequest:
+    post:
+      description: Creates new servicerequest.
+      summary: Creates new servicerequest
+      operationId: addServicerequest
+      responses:
+        '201':
+          description: serviceRequest created
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+      requestBody:
+        x-name: serviceRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Servicerequest'
+        description: Servicerequest to be created
+        required: true
+  /servicerequest/{id}:
+    get:
+      description: Returns servicerequest by id.
+      summary: Returns servicerequest by id
+      operationId: findServicerequestByid
+      parameters:
+        - name: id
+          in: path
+          description: id of serviceRequest to fetch
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Servicerequest returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Servicerequest'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+    delete:
+      description: Deletes servicerequest by id.
+      summary: Deletes servicerequest by id
+      operationId: deleteServicerequest
+      parameters:
+        - name: id
+          in: path
+          description: ID of serviceRequest to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: serviceRequest deleted
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+    put:
+      description: Updates servicerequest by id.
+      summary: Updates servicerequest by id
+      operationId: updateServicerequest
+      parameters:
+        - name: id
+          in: path
+          description: ID of serviceRequest to put
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: serviceRequest updated
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+      requestBody:
+        x-name: serviceRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Servicerequest'
+        description: Servicerequest to be updated
+        required: true
 components:
   schemas:
     ErrorModel:
@@ -881,6 +1074,10 @@ components:
           type: string
           minLength: 3
           example: int
+        timestamp:
+          type: string
+          minLength: 6
+          example: string
         totalflow:
           type: string
           minLength: 5
@@ -899,7 +1096,42 @@ components:
           example: int
       required:
         - iotid
+        - timestamp
         - totalflow
         - avgoccupancy
         - avgspeed
         - incidents
+    Servicerequest:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 3
+          example: int
+        date:
+          type: string
+          minLength: 6
+          example: string
+        service:
+          type: string
+          minLength: 6
+          example: string
+        description:
+          type: string
+          minLength: 6
+          example: string
+        devicetype:
+          type: string
+          minLength: 6
+          example: string
+        deviceid:
+          type: string
+          minLength: 3
+          example: int
+      required:
+        - id
+        - date
+        - service
+        - description
+        - devicetype
+        - deviceid
