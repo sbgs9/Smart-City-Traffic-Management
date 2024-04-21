@@ -1,0 +1,466 @@
+openapi: 3.0.2
+info:
+  version: 1.0.0
+  title: IOT Stations
+  description: API for IOT Stations
+  contact:
+    name: Sahus Nulu
+    email: sahus.nulu@sjsu.edu
+paths:
+  /iotstations:
+    get:
+      description: List of iotstations.
+      summary: List of iotstations
+      operationId: getIotstationList
+      responses:
+        '200':
+          description: Iotstation List
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Iotstation'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /iotstation:
+    post:
+      description: Creates new iotstation.
+      summary: Creates new iotstation
+      operationId: addIotstation
+      responses:
+        '201':
+          description: iotStation created
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+      requestBody:
+        x-name: iotStation
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Iotstation'
+        description: Iotstation to be created
+        required: true
+  /iotstation/{id}:
+    get:
+      description: Returns iotstation by id.
+      summary: Returns iotstation by id
+      operationId: findIotstationByid
+      parameters:
+        - name: id
+          in: path
+          description: id of iotStation to fetch
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Iotstation returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Iotstation'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+    delete:
+      description: Deletes iotstation by id.
+      summary: Deletes iotstation by id
+      operationId: deleteIotstation
+      parameters:
+        - name: id
+          in: path
+          description: ID of iotStation to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: iotStation deleted
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+    put:
+      description: Updates iotstation by id.
+      summary: Updates iotstation by id
+      operationId: updateIotstation
+      parameters:
+        - name: id
+          in: path
+          description: ID of iotStation to put
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: iotStation updated
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+      requestBody:
+        x-name: iotStation
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Iotstation'
+        description: Iotstation to be updated
+        required: true
+  /iotanalyticss:
+    get:
+      description: List of iotanalyticss.
+      summary: List of iotanalyticss
+      operationId: getIotanalyticsList
+      responses:
+        '200':
+          description: Iotanalytics List
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Iotanalytics'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /iotanalytics:
+    post:
+      description: Creates new iotanalytics.
+      summary: Creates new iotanalytics
+      operationId: addIotanalytics
+      responses:
+        '201':
+          description: iotAnalytics created
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+      requestBody:
+        x-name: iotAnalytics
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Iotanalytics'
+        description: Iotanalytics to be created
+        required: true
+  /iotanalytics/{id}:
+    get:
+      description: Returns iotanalytics by id.
+      summary: Returns iotanalytics by id
+      operationId: findIotanalyticsByid
+      parameters:
+        - name: id
+          in: path
+          description: id of iotAnalytics to fetch
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Iotanalytics returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Iotanalytics'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+    delete:
+      description: Deletes iotanalytics by id.
+      summary: Deletes iotanalytics by id
+      operationId: deleteIotanalytics
+      parameters:
+        - name: id
+          in: path
+          description: ID of iotAnalytics to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: iotAnalytics deleted
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+    put:
+      description: Updates iotanalytics by id.
+      summary: Updates iotanalytics by id
+      operationId: updateIotanalytics
+      parameters:
+        - name: id
+          in: path
+          description: ID of iotAnalytics to put
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: iotAnalytics updated
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+      requestBody:
+        x-name: iotAnalytics
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Iotanalytics'
+        description: Iotanalytics to be updated
+        required: true
+components:
+  schemas:
+    ErrorModel:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    Iotstation:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 3
+          example: int
+        name:
+          type: string
+          minLength: 6
+          example: string
+        latitude:
+          type: string
+          minLength: 6
+          example: string
+        longitude:
+          type: string
+          minLength: 6
+          example: string
+        stationtype:
+          type: string
+          minLength: 6
+          example: string
+      required:
+        - id
+        - name
+        - latitude
+        - longitude
+        - stationtype
+    Iotanalytics:
+      type: object
+      properties:
+        iotid:
+          type: string
+          minLength: 3
+          example: int
+        totalflow:
+          type: string
+          minLength: 5
+          example: float
+        avgoccupancy:
+          type: string
+          minLength: 5
+          example: float
+        avgspeed:
+          type: string
+          minLength: 5
+          example: float
+        incidents:
+          type: string
+          minLength: 3
+          example: int
+      required:
+        - iotid
+        - totalflow
+        - avgoccupancy
+        - avgspeed
+        - incidents

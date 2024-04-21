@@ -1,0 +1,13 @@
+iotStation:
+  id: int
+  name: string
+  latitude: string
+  longitude: string
+  stationType: string
+
+iotAnalytics:
+  iotId: int
+  totalFlow: float
+  avgOccupancy: float
+  avgSpeed: float
+  incidents: int

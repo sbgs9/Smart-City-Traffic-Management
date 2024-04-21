@@ -1,0 +1,847 @@
+openapi: 3.0.2
+info:
+  version: 1.0.0
+  title: CCTV Cameras
+  description: API for CCTV cameras
+  contact:
+    name: Sahus Nulu
+    email: sahus.nulu@sjsu.edu
+paths:
+  /cameras:
+    get:
+      description: List of cameras.
+      summary: List of cameras
+      operationId: getCameraList
+      responses:
+        '200':
+          description: Camera List
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Camera'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /camera:
+    post:
+      description: Creates new camera.
+      summary: Creates new camera
+      operationId: addCamera
+      responses:
+        '201':
+          description: camera created
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+      requestBody:
+        x-name: camera
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Camera'
+        description: Camera to be created
+        required: true
+  /camera/{id}:
+    get:
+      description: Returns camera by id.
+      summary: Returns camera by id
+      operationId: findCameraByid
+      parameters:
+        - name: id
+          in: path
+          description: id of camera to fetch
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Camera returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Camera'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+    delete:
+      description: Deletes camera by id.
+      summary: Deletes camera by id
+      operationId: deleteCamera
+      parameters:
+        - name: id
+          in: path
+          description: ID of camera to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: camera deleted
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+    put:
+      description: Updates camera by id.
+      summary: Updates camera by id
+      operationId: updateCamera
+      parameters:
+        - name: id
+          in: path
+          description: ID of camera to put
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: camera updated
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+      requestBody:
+        x-name: camera
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Camera'
+        description: Camera to be updated
+        required: true
+  /cameraimages:
+    get:
+      description: List of cameraimages.
+      summary: List of cameraimages
+      operationId: getCameraimageList
+      responses:
+        '200':
+          description: Cameraimage List
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cameraimage'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /cameraimage:
+    post:
+      description: Creates new cameraimage.
+      summary: Creates new cameraimage
+      operationId: addCameraimage
+      responses:
+        '201':
+          description: cameraImage created
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+      requestBody:
+        x-name: cameraImage
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cameraimage'
+        description: Cameraimage to be created
+        required: true
+  /cameraimage/{id}:
+    get:
+      description: Returns cameraimage by id.
+      summary: Returns cameraimage by id
+      operationId: findCameraimageByid
+      parameters:
+        - name: id
+          in: path
+          description: id of cameraImage to fetch
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cameraimage returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cameraimage'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+    delete:
+      description: Deletes cameraimage by id.
+      summary: Deletes cameraimage by id
+      operationId: deleteCameraimage
+      parameters:
+        - name: id
+          in: path
+          description: ID of cameraImage to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: cameraImage deleted
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+    put:
+      description: Updates cameraimage by id.
+      summary: Updates cameraimage by id
+      operationId: updateCameraimage
+      parameters:
+        - name: id
+          in: path
+          description: ID of cameraImage to put
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: cameraImage updated
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+      requestBody:
+        x-name: cameraImage
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cameraimage'
+        description: Cameraimage to be updated
+        required: true
+  /iotstations:
+    get:
+      description: List of iotstations.
+      summary: List of iotstations
+      operationId: getIotstationList
+      responses:
+        '200':
+          description: Iotstation List
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Iotstation'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /iotstation:
+    post:
+      description: Creates new iotstation.
+      summary: Creates new iotstation
+      operationId: addIotstation
+      responses:
+        '201':
+          description: iotStation created
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+      requestBody:
+        x-name: iotStation
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Iotstation'
+        description: Iotstation to be created
+        required: true
+  /iotstation/{id}:
+    get:
+      description: Returns iotstation by id.
+      summary: Returns iotstation by id
+      operationId: findIotstationByid
+      parameters:
+        - name: id
+          in: path
+          description: id of iotStation to fetch
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Iotstation returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Iotstation'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+    delete:
+      description: Deletes iotstation by id.
+      summary: Deletes iotstation by id
+      operationId: deleteIotstation
+      parameters:
+        - name: id
+          in: path
+          description: ID of iotStation to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: iotStation deleted
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+    put:
+      description: Updates iotstation by id.
+      summary: Updates iotstation by id
+      operationId: updateIotstation
+      parameters:
+        - name: id
+          in: path
+          description: ID of iotStation to put
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: iotStation updated
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+      requestBody:
+        x-name: iotStation
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Iotstation'
+        description: Iotstation to be updated
+        required: true
+  /iotanalyticss:
+    get:
+      description: List of iotanalyticss.
+      summary: List of iotanalyticss
+      operationId: getIotanalyticsList
+      responses:
+        '200':
+          description: Iotanalytics List
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Iotanalytics'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /iotanalytics:
+    post:
+      description: Creates new iotanalytics.
+      summary: Creates new iotanalytics
+      operationId: addIotanalytics
+      responses:
+        '201':
+          description: iotAnalytics created
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+      requestBody:
+        x-name: iotAnalytics
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Iotanalytics'
+        description: Iotanalytics to be created
+        required: true
+  /iotanalytics/{id}:
+    get:
+      description: Returns iotanalytics by id.
+      summary: Returns iotanalytics by id
+      operationId: findIotanalyticsByid
+      parameters:
+        - name: id
+          in: path
+          description: id of iotAnalytics to fetch
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Iotanalytics returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Iotanalytics'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+    delete:
+      description: Deletes iotanalytics by id.
+      summary: Deletes iotanalytics by id
+      operationId: deleteIotanalytics
+      parameters:
+        - name: id
+          in: path
+          description: ID of iotAnalytics to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: iotAnalytics deleted
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+    put:
+      description: Updates iotanalytics by id.
+      summary: Updates iotanalytics by id
+      operationId: updateIotanalytics
+      parameters:
+        - name: id
+          in: path
+          description: ID of iotAnalytics to put
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: iotAnalytics updated
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '401':
+          description: Authorization information is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '404':
+          description: Data with the specified ID was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+        '500':
+          description: Unexpected internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+      requestBody:
+        x-name: iotAnalytics
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Iotanalytics'
+        description: Iotanalytics to be updated
+        required: true
+components:
+  schemas:
+    ErrorModel:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    Camera:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 3
+          example: int
+        name:
+          type: string
+          minLength: 6
+          example: string
+        latitude:
+          type: string
+          minLength: 6
+          example: string
+        longitude:
+          type: string
+          minLength: 6
+          example: string
+        inservice:
+          type: string
+          minLength: 4
+          example: bool
+        streamingurl:
+          type: string
+          minLength: 6
+          example: string
+      required:
+      - id
+      - name
+      - latitude
+      - longitude
+      - inservice
+      - streamingurl
+    Cameraimage:
+      type: object
+      properties:
+        cameraid:
+          type: string
+          minLength: 3
+          example: int
+        timestamp:
+          type: string
+          minLength: 6
+          example: string
+        url:
+          type: string
+          minLength: 6
+          example: string
+      required:
+      - cameraid
+      - timestamp
+      - url

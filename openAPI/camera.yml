@@ -1,0 +1,12 @@
+camera:
+  id: int
+  name: string
+  latitude: string
+  longitude: string
+  inService: bool
+  streamingUrl: string
+
+cameraImage:
+  cameraId: int
+  timestamp: string
+  url: string
