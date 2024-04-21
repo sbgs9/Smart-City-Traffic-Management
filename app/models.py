@@ -22,7 +22,7 @@ class Camera(BaseModel):
 
 
 class Cameraimage(BaseModel):
-    cameraid: constr(min_length=3) = Field(..., example='int')
+    cameraid: constr(min_length=1) = Field(..., example='int')
     timestamp: constr(min_length=6) = Field(..., example='string')
     url: constr(min_length=6) = Field(..., example='string')
 
@@ -38,9 +38,9 @@ class Iotstation(BaseModel):
 class Iotanalytics(BaseModel):
     iotid: constr(min_length=3) = Field(..., example='int')
     timestamp: constr(min_length=6) = Field(..., example='string')
-    totalflow: constr(min_length=5) = Field(..., example='float')
-    avgoccupancy: constr(min_length=5) = Field(..., example='float')
-    avgspeed: constr(min_length=5) = Field(..., example='float')
+    totalflow: constr(min_length=1) = Field(..., example='float')
+    avgoccupancy: constr(min_length=0) = Field(..., example='float')
+    avgspeed: constr(min_length=1) = Field(..., example='float')
     incidents: constr(min_length=3) = Field(..., example='int')
 
 
