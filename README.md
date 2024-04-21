@@ -20,6 +20,8 @@ You can then run the commands in createTables.sql and populateTable.sql.
 To host the api's locally, install the following:
 
 `pip install "uvicorn[standard]"`
+`pip install fastapi`
+`pip install mysqlclient`
 
 Then run the following command in the app directory:
 

@@ -93,14 +93,13 @@ def get_camera_list() -> Union[List[Camera], ErrorModel]:
 def find_camera_byid(id: str) -> Union[Camera, ErrorModel]:
     cursor = conn.cursor()
     query = "SELECT * FROM camera WHERE id = %s;"
-    cursor.execute(query, id)
+    cursor.execute(query, [id])
     item = cursor.fetchone()
     cursor.close()
     if item is None:
         return ErrorModel(code=404, message="CCTV not found")
     return Camera(id=item[0], name=item[1], latitude=item[2], longitude=item[3], inService=bool(item[4]),
                   streamingUrl=item[5])
-
 
 
 @app.delete(
@@ -330,10 +329,14 @@ def add_iotstation(body: Iotstation) -> Union[None, ErrorModel]:
     },
 )
 def find_iotstation_byid(id: str) -> Union[Iotstation, ErrorModel]:
-    """
-    Returns iotstation by id
-    """
-    pass
+    cursor = conn.cursor()
+    query = "SELECT * FROM iotStation WHERE id = %s;"
+    cursor.execute(query, [id])
+    item = cursor.fetchone()
+    cursor.close()
+    if item is None:
+        return ErrorModel(code=404, message="IOT Station not found")
+    return Iotstation(id=item[0], name=item[1], latitude=item[2], longitude=item[3], stationType=item[4])
 
 
 @app.delete(
@@ -380,7 +383,20 @@ def update_iotstation(id: str, body: Iotstation = ...) -> Union[None, ErrorModel
     },
 )
 def get_iotstation_list() -> Union[List[Iotstation], ErrorModel]:
-    """
-    List of iotstations
-    """
-    pass
+    cursor = conn.cursor()
+    query = "SELECT * FROM iotStation;"
+    cursor.execute(query)
+    items = cursor.fetchall()
+    cursor.close()
+
+    if items is None:
+        return ErrorModel(code=404, message="IOT Stations not found")
+
+    iotStations = []
+    for item in items:
+        iotStation = Iotstation(
+            id=item[0], name=item[1], latitude=item[2], longitude=item[3], stationType=item[4]
+        )
+        iotStations.append(iotStation)
+
+    return iotStations

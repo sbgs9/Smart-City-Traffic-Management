@@ -32,7 +32,7 @@ class Iotstation(BaseModel):
     name: constr(min_length=6) = Field(..., example='string')
     latitude: constr(min_length=6) = Field(..., example='string')
     longitude: constr(min_length=6) = Field(..., example='string')
-    stationtype: constr(min_length=6) = Field(..., example='string')
+    stationType: constr(min_length=2) = Field(..., example='string')
 
 
 class Iotanalytics(BaseModel):
