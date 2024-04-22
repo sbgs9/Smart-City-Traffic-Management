@@ -29,9 +29,9 @@ class Cameraimage(BaseModel):
 
 class Iotstation(BaseModel):
     id: constr(min_length=1) = Field(..., example='int')
-    name: constr(min_length=3) = Field(..., example='string')
-    latitude: constr(min_length=3) = Field(..., example='string')
-    longitude: constr(min_length=3) = Field(..., example='string')
+    name: constr(min_length=1) = Field(..., example='string')
+    latitude: constr(min_length=1) = Field(..., example='string')
+    longitude: constr(min_length=1) = Field(..., example='string')
     stationType: constr(min_length=2) = Field(..., example='string')
 
 

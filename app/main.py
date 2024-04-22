@@ -30,7 +30,7 @@ db_config = {
 
 conn = MySQLdb.connect(**db_config)
 
-client = pymongo.MongoClient("mongodb://localhost:27017/", username='user', password='cmpe-281')
+client = pymongo.MongoClient("mongodb://localhost:27017/")
 db = client["smartCity"]
 
 iotAnalytics = db["iotAnalytics"]
@@ -284,7 +284,20 @@ def find_iotanalytics_byid(id: str) -> Union[Iotanalytics, ErrorModel]:
     """
     Returns iotanalytics by id
     """
-    pass
+    data = iotAnalytics.find_one({"iotId": id})
+    if data:
+        data_obj = Iotanalytics(
+            iotId=data['iotId'],
+            timestamp=data['timestamp'],
+            totalFlow=data['totalFlow'],
+            avgOccupancy=data['avgOccupancy'],
+            avgSpeed=data['avgSpeed'],
+            incidents=data['incidents']
+        )
+        return data_obj
+    else:
+        return ErrorModel(code=404, message="No IOT Analytics found")
+
 
 
 @app.delete(
@@ -370,7 +383,6 @@ def add_iotstation(body: Iotstation) -> Union[None, ErrorModel]:
         cursor.close()
     except Exception as e:
         return ErrorModel(code=500, message=str(e))
-
 
 @app.get(
     '/iotstation/{id}',

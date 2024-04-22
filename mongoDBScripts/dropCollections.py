@@ -1,6 +1,6 @@
 import pymongo
 
-client = pymongo.MongoClient("mongodb://localhost:27017/", username='user', password='cmpe-281')
+client = pymongo.MongoClient("mongodb://localhost:27017/")
 db = client["smartCity"]
 iotAnalytics = db["iotAnalytics"]
 cameraImage = db["cameraImage"]
