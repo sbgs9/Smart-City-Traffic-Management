@@ -303,10 +303,14 @@ def delete_iotanalytics(id: str) -> Union[None, ErrorModel]:
     },
 )
 def update_iotanalytics(id: str, body: Iotanalytics = ...) -> Union[None, ErrorModel]:
-    """
-    Updates iotanalytics by id
-    """
-    pass
+    try:
+        iotData = body.dict(exclude_unset=True)
+        result = iotAnalytics.update_one(
+            {"_id": id},
+            {"$set": iotData}
+        )
+    except Exception as e:
+        return ErrorModel(code=500, message=str(e))
 
 
 @app.get(
@@ -319,11 +323,21 @@ def update_iotanalytics(id: str, body: Iotanalytics = ...) -> Union[None, ErrorM
     },
 )
 def get_iotanalytics_list() -> Union[List[Iotanalytics], ErrorModel]:
-    """
-    List of iotanalyticss
-    """
-    pass
+    iotanalytics = []
+    for i in iotAnalytics.find():
+        iot = Iotanalytics(
+            iotId=i["iotId"],
+            timestamp=i["timestamp"],
+            totalFlow=i["totalFlow"],
+            avgOccupancy=i["avgOccupancy"],
+            avgSpeed=i["avgSpeed"],
+            incidents=i["incidents"]
+        )
+        iotanalytics.append(iot)
 
+    if not iotanalytics:
+        return ErrorModel(code=404, mesage="No IOT Analytics found")
+    return iotanalytics
 
 @app.post(
     '/iotstation',
