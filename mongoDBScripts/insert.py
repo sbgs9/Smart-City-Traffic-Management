@@ -17,10 +17,10 @@ iotInsert = iotAnalytics.insert_many(iotList)
 cameraImage = db["cameraImage"]
 
 cameraList = [
-    {"_id": 1, "timestamp": "22:18:47-2023-08-23", "url": "https:\/\/cwwp2.dot.ca.gov\/data\/d4\/cctv\/image\/tvc60i880us101\/tvc60i880us101.jpg"},
-    {"_id": 2, "timestamp": "20:15:40-2023-08-23", "url": "https:\/\/cwwp2.dot.ca.gov\/data\/d4\/cctv\/image\/tvc60i880us101\/tvc60i880us101.jpg"},
-    {"_id": 3, "timestamp": "18:15:59-2023-08-23", "url": "https:\/\/cwwp2.dot.ca.gov\/data\/d4\/cctv\/image\/tvc60i880us101\/tvc60i880us101.jpg"},
-    {"_id": 4, "timestamp": "16:15:22-2023-08-23", "url": None}
+    {"cameraId": 1, "timestamp": "22:18:47-2023-08-23", "url": "https:\/\/cwwp2.dot.ca.gov\/data\/d4\/cctv\/image\/tvc60i880us101\/tvc60i880us101.jpg"},
+    {"cameraId": 2, "timestamp": "20:15:40-2023-08-23", "url": "https:\/\/cwwp2.dot.ca.gov\/data\/d4\/cctv\/image\/tvc60i880us101\/tvc60i880us101.jpg"},
+    {"cameraId": 3, "timestamp": "18:15:59-2023-08-23", "url": "https:\/\/cwwp2.dot.ca.gov\/data\/d4\/cctv\/image\/tvc60i880us101\/tvc60i880us101.jpg"},
+    {"cameraId": 4, "timestamp": "16:15:22-2023-08-23", "url": None}
 ]
 
 cameraInsert = cameraImage.insert_many(cameraList)

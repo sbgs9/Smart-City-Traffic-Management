@@ -34,6 +34,7 @@ client = pymongo.MongoClient("mongodb://localhost:27017/", username='user', pass
 db = client["smartCity"]
 
 iotAnalytics = db["iotAnalytics"]
+cameraImage = db["cameraImage"]
 
 app = FastAPI(
     version='1.0.0',
@@ -166,10 +167,13 @@ def update_camera(id: str, body: Camera = ...) -> Union[None, ErrorModel]:
     },
 )
 def add_cameraimage(body: Cameraimage) -> Union[None, ErrorModel]:
-    """
-    Creates new cameraimage
-    """
-    pass
+    try:
+        cameraImageData = body.dict()
+        result = cameraImage.insert_one(cameraImageData)
+        if not result.inserted_id:
+            return ErrorModel(code=500, message="Failed to add Camera Image data")
+    except Exception as e:
+        return ErrorModel(code=500, message=str(e))
 
 
 @app.get(
@@ -233,10 +237,17 @@ def update_cameraimage(id: str, body: Cameraimage = ...) -> Union[None, ErrorMod
     },
 )
 def get_cameraimage_list() -> Union[List[Cameraimage], ErrorModel]:
-    """
-    List of cameraimages
-    """
-    pass
+    cameraimages = []
+    for i in cameraImage.find():
+        cameraimage = Cameraimage(
+            cameraId=i["cameraId"],
+            timestamp=i["timestamp"],
+            url=i["url"]
+        )
+        cameraimages.append(cameraimage)
+    if not cameraimages:
+        return ErrorModel(code=404, message="No Camera Images found")
+    return cameraimages
 
 
 @app.post(
@@ -339,6 +350,7 @@ def get_iotanalytics_list() -> Union[List[Iotanalytics], ErrorModel]:
         return ErrorModel(code=404, mesage="No IOT Analytics found")
     return iotanalytics
 
+
 @app.post(
     '/iotstation',
     response_model=None,
@@ -349,11 +361,11 @@ def get_iotanalytics_list() -> Union[List[Iotanalytics], ErrorModel]:
     },
 )
 def add_iotstation(body: Iotstation) -> Union[None, ErrorModel]:
-    """
-    Creates new iotstation
-    """
-    pass
-
+    cursor = conn.cursor()
+    query = "INSERT INTO iotStation (id, name, latitude, longitude, stationType) VALUES (%s, %s, %s, %s, %s)"
+    cursor.execute(query, (body.id, body.name, body.latitude, body.longitude, body.stationType))
+    conn.commit()
+    cursor.close()
 
 @app.get(
     '/iotstation/{id}',

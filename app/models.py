@@ -24,11 +24,11 @@ class Camera(BaseModel):
 class Cameraimage(BaseModel):
     cameraId: constr(min_length=1) = Field(..., example='int')
     timestamp: constr(min_length=6) = Field(..., example='string')
-    url: constr(min_length=6) = Field(..., example='string')
+    url: constr(min_length=6) = Field(None, example='string')
 
 
 class Iotstation(BaseModel):
-    id: constr(min_length=3) = Field(..., example='int')
+    id: constr(min_length=1) = Field(..., example='int')
     name: constr(min_length=6) = Field(..., example='string')
     latitude: constr(min_length=6) = Field(..., example='string')
     longitude: constr(min_length=6) = Field(..., example='string')
