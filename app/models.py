@@ -18,7 +18,7 @@ class Camera(BaseModel):
     latitude: constr(min_length=6) = Field(..., example='string')
     longitude: constr(min_length=6) = Field(..., example='string')
     inService: constr(min_length=1) = Field(..., example='bool')
-    streamingUrl: constr(min_length=6) = Field(None, example='string')
+    streamingUrl: constr(min_length=0) = Field(None, example='string')
 
 
 class Cameraimage(BaseModel):
