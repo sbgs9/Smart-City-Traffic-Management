@@ -61,10 +61,11 @@ app = FastAPI(
     },
 )
 def add_camera(body: Camera) -> Union[None, ErrorModel]:
-    """
-    Creates new camera
-    """
-    pass
+    cursor = conn.cursor()
+    query = "INSERT INTO camera (id, name, latitude, longitude, inService, streamingUrl) VALUES (%s, %s, %s, %s, %s, %s);"
+    cursor.execute(query, (body.id, body.name, body.latitude, body.longitude, body.inService, body.streamingUrl))
+    conn.commit()
+    cursor.close()
 
 
 @app.get(
@@ -361,11 +362,15 @@ def get_iotanalytics_list() -> Union[List[Iotanalytics], ErrorModel]:
     },
 )
 def add_iotstation(body: Iotstation) -> Union[None, ErrorModel]:
-    cursor = conn.cursor()
-    query = "INSERT INTO iotStation (id, name, latitude, longitude, stationType) VALUES (%s, %s, %s, %s, %s)"
-    cursor.execute(query, (body.id, body.name, body.latitude, body.longitude, body.stationType))
-    conn.commit()
-    cursor.close()
+    try:
+        cursor = conn.cursor()
+        query = "INSERT INTO iotStation (id, name, latitude, longitude, stationType) VALUES (%s, %s, %s, %s, %s)"
+        cursor.execute(query, (body.id, body.name, body.latitude, body.longitude, body.stationType))
+        conn.commit()
+        cursor.close()
+    except Exception as e:
+        return ErrorModel(code=500, message=str(e))
+
 
 @app.get(
     '/iotstation/{id}',
@@ -461,11 +466,14 @@ def get_iotstation_list() -> Union[List[Iotstation], ErrorModel]:
     },
 )
 def add_servicerequest(body: Servicerequest) -> Union[None, ErrorModel]:
-    """
-    Creates new servicerequest
-    """
-    pass
-
+    try:
+        cursor = conn.cursor()
+        query = "INSERT INTO serviceRequest (id, date, service, description, deviceType, deviceId) VALUES (%s, %s, %s, %s, %s, %s)"
+        cursor.execute(query, (body.id, body.date, body.service, body.description, body.deviceType, body.deviceId))
+        conn.commit()
+        cursor.close()
+    except Exception as e:
+        return ErrorModel(code=500, message=str(e))
 
 @app.get(
     '/servicerequest/{id}',
