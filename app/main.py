@@ -30,18 +30,11 @@ db_config = {
 
 conn = MySQLdb.connect(**db_config)
 
-client = pymongo.MongoClient("mongodb://localhost:27017/")
+client = pymongo.MongoClient("mongodb://localhost:27017/", username='user', password='cmpe-281')
 db = client["smartCity"]
 
 iotAnalytics = db["iotAnalytics"]
 cameraImage = db["cameraImage"]
-
-app = FastAPI(
-    version='1.0.0',
-    title='CCTV Cameras',
-    description='API for CCTV Cameras and IOT Stations',
-    contact={'name': 'Sahus Nulu', 'email': 'sahus.nulu@sjsu.edu'},
-)
 
 app = FastAPI(
     version='1.0.0',
@@ -188,10 +181,16 @@ def add_cameraimage(body: Cameraimage) -> Union[None, ErrorModel]:
     },
 )
 def find_cameraimage_byid(id: str) -> Union[Cameraimage, ErrorModel]:
-    """
-    Returns cameraimage by id
-    """
-    pass
+    cameraData = cameraImage.find_one({"cameraId": int(id)})
+    if cameraData:
+        cameraimage = Cameraimage(
+            cameraId=cameraData['cameraId'],
+            timestamp=cameraData['timestamp'],
+            url=cameraData['url']
+        )
+        return cameraimage
+    else:
+        return ErrorModel(code=404, message="No Camera Image found")
 
 
 @app.delete(
@@ -281,22 +280,22 @@ def add_iotanalytics(body: Iotanalytics) -> Union[None, ErrorModel]:
     },
 )
 def find_iotanalytics_byid(id: str) -> Union[Iotanalytics, ErrorModel]:
-    """
-    Returns iotanalytics by id
-    """
-    data = iotAnalytics.find_one({"iotId": id})
-    if data:
-        data_obj = Iotanalytics(
-            iotId=data['iotId'],
-            timestamp=data['timestamp'],
-            totalFlow=data['totalFlow'],
-            avgOccupancy=data['avgOccupancy'],
-            avgSpeed=data['avgSpeed'],
-            incidents=data['incidents']
-        )
-        return data_obj
-    else:
+    data = iotAnalytics.find_one({"iotId": int(id)})
+    print()
+    print(data)
+    if data is None:
         return ErrorModel(code=404, message="No IOT Analytics found")
+
+    iot = Iotanalytics(
+        iotId=data['iotId'],
+        timestamp=data['timestamp'],
+        totalFlow=data['totalFlow'],
+        avgOccupancy=data['avgOccupancy'],
+        avgSpeed=data['avgSpeed'],
+        incidents=data['incidents']
+    )
+
+    return iot
 
 
 
@@ -383,6 +382,7 @@ def add_iotstation(body: Iotstation) -> Union[None, ErrorModel]:
         cursor.close()
     except Exception as e:
         return ErrorModel(code=500, message=str(e))
+
 
 @app.get(
     '/iotstation/{id}',
@@ -486,6 +486,7 @@ def add_servicerequest(body: Servicerequest) -> Union[None, ErrorModel]:
         cursor.close()
     except Exception as e:
         return ErrorModel(code=500, message=str(e))
+
 
 @app.get(
     '/servicerequest/{id}',
