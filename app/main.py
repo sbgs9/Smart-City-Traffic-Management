@@ -8,6 +8,7 @@ import os
 from typing import List, Union
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from models import (
     Camera,
@@ -43,6 +44,21 @@ app = FastAPI(
     title='CCTV Cameras',
     description='API for CCTV Cameras and IOT Stations',
     contact={'name': 'Sahus Nulu', 'email': 'sahus.nulu@sjsu.edu'},
+)
+
+origins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://localhost:8080"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+
 )
 
 
