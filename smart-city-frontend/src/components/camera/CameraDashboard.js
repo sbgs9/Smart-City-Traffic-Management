@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, TextField } from '@material-ui/core';
+import { Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, TextField, Collapse } from '@material-ui/core';
 
 function CameraDashboard() {
   const [cameras, setCameras] = useState([]);
   const [search, setSearch] = useState('');
+  const [open, setOpen] = useState({});
+  const [error, setError] = useState({});
 
   useEffect(() => {
-    // Fetch the camera data from your API
     fetch('/cameras')
       .then(response => response.json())
       .then(setCameras)
@@ -14,6 +15,14 @@ function CameraDashboard() {
   }, []);
 
   const filteredCameras = cameras.filter(camera => camera.name.toLowerCase().includes(search.toLowerCase()));
+
+  const handleClick = (id) => {
+    setOpen(prevOpen => ({ ...prevOpen, [id]: !prevOpen[id] }));
+  };
+
+  const handleVideoError = (id) => {
+    setError(prevError => ({ ...prevError, [id]: true }));
+  };
 
   return (
     <Container>
@@ -39,15 +48,29 @@ function CameraDashboard() {
           </TableHead>
           <TableBody>
             {filteredCameras.map((camera) => (
-              <TableRow key={camera.id}>
-                <TableCell component="th" scope="row">
-                  {camera.name}
-                </TableCell>
-                <TableCell align="right">{camera.latitude}</TableCell>
-                <TableCell align="right">{camera.longitude}</TableCell>
-                <TableCell align="right">{camera.inService ? 'Yes' : 'No'}</TableCell>
-                <TableCell align="right">{camera.streamingUrl}</TableCell>
-              </TableRow>
+              <React.Fragment key={camera.id}>
+                <TableRow onClick={() => handleClick(camera.id)}>
+                  <TableCell component="th" scope="row">
+                    {camera.name}
+                  </TableCell>
+                  <TableCell align="right">{camera.latitude}</TableCell>
+                  <TableCell align="right">{camera.longitude}</TableCell>
+                  <TableCell align="right">{camera.inService ? 'Yes' : 'No'}</TableCell>
+                  <TableCell align="right">{camera.streamingUrl}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                    <Collapse in={open[camera.id]} timeout="auto" unmountOnExit>
+                      {error[camera.id] ? (
+                        <p>Stream Unavailable</p>
+                      ) : (
+                        <iframe title="Camera Stream" src={camera.streamingUrl} width="200" height="150" allow="autoplay"></iframe>
+                      )}
+                      <img src={camera.streamingUrl} style={{ display: 'none' }} onError={() => handleVideoError(camera.id)} alt="" />
+                    </Collapse>
+                  </TableCell>
+                </TableRow>
+              </React.Fragment>
             ))}
           </TableBody>
         </Table>
