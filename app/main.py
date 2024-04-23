@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import os
 from typing import List, Union
 
 from fastapi import FastAPI
@@ -21,16 +22,17 @@ import MySQLdb
 import pymongo
 
 db_config = {
-    'host': '127.0.0.1',
+    'host': os.environ.get("HOST_IP"),
     'user': 'root',
     'passwd': 'cmpe-281',
     'db': 'smartCity',
-    'port': 3307
+    'port': 3306
 }
 
 conn = MySQLdb.connect(**db_config)
 
-client = pymongo.MongoClient("mongodb://localhost:27017/", username='user', password='cmpe-281')
+mongodbUrl = "mongodb://%s:27017/" % (os.environ.get("HOST_IP"))
+client = pymongo.MongoClient(mongodbUrl, username='user', password='cmpe-281')
 db = client["smartCity"]
 
 iotAnalytics = db["iotAnalytics"]

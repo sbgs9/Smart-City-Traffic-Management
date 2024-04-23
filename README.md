@@ -11,7 +11,7 @@ docker pull mysql:latest
 Then create the container with the following command:
 
 ```
-docker run --name cmpe281-mysql -e MYSQL_ROOT_PASSWORD=cmpe-281 -p 3307:3306 -v "cmpe281-mysql-data:<path of local folder>" -d mysql
+docker run --name cmpe281-mysql -e MYSQL_ROOT_PASSWORD=cmpe-281 -p 3306:3306 -v "cmpe281-mysql-data:<path of local folder>" -d mysql
 ```
 
 After that, connect through IDE or install mysql and connect with:
@@ -20,13 +20,7 @@ After that, connect through IDE or install mysql and connect with:
 mysql --host=127.0.0.1 --port=3307 -u root -p
 ```
 
-Then install this package:
-
-```
-pip install mysqlclient
-```
-
-For sample data, you can run the commands createTables.sql and populateTable.sql in sqlScripts.
+For sample data, you can run the commands `createTables.sql` and `populateTable.sql` in sqlScripts.
 
 ## MongoDB Setup
 
@@ -42,26 +36,22 @@ Then create the container with the following:
 docker run --name cmpe281-mongodb -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=user -e MONGO_INITDB_ROOT_PASSWORD=cmpe-281 -v "mongodb-data:<path of local folder>" -d mongodb/mongodb-community-server:latest
 ```
 
-Please download the following import:
+For sample data, run the files in mongoDBScripts in order of `insert.py`, `get.py`, and if you want to delete the collections run `dropCollections.py`
+
+## API Server
+
+Make sure you are in the overarching `Project` directory.
+
+Build the Docker container with the following command:
 
 ```
-pip install pymongo
+docker build -t smartcity .
 ```
 
-For sample data, run the files in mongoDBScripts in order of insert.py, get.py, and if you want to delete the collections run dropCollections.py
-
-## Host APIs
-To host the api's locally, install the following:
+Run the following command to start the container (make sure you put your IP address of your computer):
 
 ```
-pip install "uvicorn[standard]"
-pip install fastapi
-```
-
-Then run the following command in the app directory:
-
-```
-uvicorn main:app --reload
+docker run -d --name smartcity -p 8000:8000 -e HOST_IP=<your-host-ip> smartcity
 ```
 
 
