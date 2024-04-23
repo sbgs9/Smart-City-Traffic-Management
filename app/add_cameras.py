@@ -12,7 +12,7 @@ with urllib.request.urlopen('https://cwwp2.dot.ca.gov/data/d4/cctv/cctvStatusD04
             name=cctv['cctv']['location']['locationName'],
             latitude=cctv['cctv']['location']['latitude'],
             longitude=cctv['cctv']['location']['longitude'],
-            inService=1 if cctv['cctv']['inService'] == 'true' else 0,
+            inService='true' if cctv['cctv']['inService'] == 'true' else 'false',
             streamingUrl=cctv['cctv']['imageData']['streamingVideoURL']
         )
         main.add_camera(curr_data)

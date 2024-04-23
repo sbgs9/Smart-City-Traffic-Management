@@ -13,12 +13,12 @@ class ErrorModel(BaseModel):
 
 
 class Camera(BaseModel):
-    id: constr(min_length=1) = Field(..., example='int')
-    name: constr(min_length=6) = Field(..., example='string')
-    latitude: constr(min_length=6) = Field(..., example='string')
-    longitude: constr(min_length=6) = Field(..., example='string')
-    inService: constr(min_length=1) = Field(..., example='bool')
-    streamingUrl: constr(min_length=0) = Field(None, example='string')
+    id: int = Field(..., example=1)
+    name: str = Field(..., example='Camera Name')
+    latitude: float = Field(..., example=37.825390)
+    longitude: float = Field(..., example=-122.272910)
+    inService: bool = Field(..., example=True)
+    streamingUrl: str = Field(None, example='http://example.com/stream')
 
 
 class Cameraimage(BaseModel):
