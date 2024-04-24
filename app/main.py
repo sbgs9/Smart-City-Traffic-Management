@@ -152,6 +152,7 @@ def delete_camera(id: str) -> Union[None, ErrorModel]:
     conn.commit()
     cursor.close()
 
+
 @app.put(
     '/camera/{id}',
     response_model=None,
@@ -223,10 +224,8 @@ def find_cameraimage_byid(id: str) -> Union[Cameraimage, ErrorModel]:
     },
 )
 def delete_cameraimage(id: str) -> Union[None, ErrorModel]:
-    """
-    Deletes cameraimage by id
-    """
-    pass
+    deletequery = {"cameraId": id}
+    cameraImage.delete_one(deletequery)
 
 
 @app.put(
@@ -240,10 +239,9 @@ def delete_cameraimage(id: str) -> Union[None, ErrorModel]:
     },
 )
 def update_cameraimage(id: str, body: Cameraimage = ...) -> Union[None, ErrorModel]:
-    """
-    Updates cameraimage by id
-    """
-    pass
+    updatequery = {"cameraId": id}
+    newvalues = {"$set": {"cameraId": body.cameraId, "timestamp": body.timestamp, "url": body.url}}
+    cameraImage.update_one(updatequery, newvalues)
 
 
 @app.get(
@@ -315,7 +313,6 @@ def find_iotanalytics_byid(id: str) -> Union[Iotanalytics, ErrorModel]:
     return iot
 
 
-
 @app.delete(
     '/iotanalytics/{id}',
     response_model=None,
@@ -327,10 +324,8 @@ def find_iotanalytics_byid(id: str) -> Union[Iotanalytics, ErrorModel]:
     },
 )
 def delete_iotanalytics(id: str) -> Union[None, ErrorModel]:
-    """
-    Deletes iotanalytics by id
-    """
-    pass
+    deletequery = {"iotId": id}
+    iotAnalytics.delete_one(deletequery)
 
 
 @app.put(
@@ -344,14 +339,10 @@ def delete_iotanalytics(id: str) -> Union[None, ErrorModel]:
     },
 )
 def update_iotanalytics(id: str, body: Iotanalytics = ...) -> Union[None, ErrorModel]:
-    try:
-        iotData = body.dict(exclude_unset=True)
-        result = iotAnalytics.update_one(
-            {"_id": id},
-            {"$set": iotData}
-        )
-    except Exception as e:
-        return ErrorModel(code=500, message=str(e))
+    updatequery = {"iotId": id}
+    newvalues = {"$set": {"iotId": body.iotId, "timestamp": body.timestamp, "totalFlow": body.totalFlow,
+                          "avgOccupancy": body.avgOccupancy, "avgSpeed": body.avgSpeed, "incidents": body.incidents}}
+    iotAnalytics.update_one(updatequery, newvalues)
 
 
 @app.get(
@@ -433,10 +424,11 @@ def find_iotstation_byid(id: str) -> Union[Iotstation, ErrorModel]:
     },
 )
 def delete_iotstation(id: str) -> Union[None, ErrorModel]:
-    """
-    Deletes iotstation by id
-    """
-    pass
+    cursor = conn.cursor()
+    query = "DELETE FROM iotStation WHERE id=%s"
+    cursor.execute(query, id)
+    conn.commit()
+    cursor.close()
 
 
 @app.put(
@@ -450,10 +442,11 @@ def delete_iotstation(id: str) -> Union[None, ErrorModel]:
     },
 )
 def update_iotstation(id: str, body: Iotstation = ...) -> Union[None, ErrorModel]:
-    """
-    Updates iotstation by id
-    """
-    pass
+    cursor = conn.cursor()
+    query = "UPDATE iotStation SET name=%s, latitude=%s, longitude=%s, stationType=%s WHERE id=%s"
+    cursor.execute(query, (body.name, body.latitude, body.longitude, body.stationType, id))
+    conn.commit()
+    cursor.close()
 
 
 @app.get(
@@ -542,10 +535,11 @@ def find_servicerequest_byid(id: str) -> Union[Servicerequest, ErrorModel]:
     },
 )
 def delete_servicerequest(id: str) -> Union[None, ErrorModel]:
-    """
-    Deletes servicerequest by id
-    """
-    pass
+    cursor = conn.cursor()
+    query = "DELETE FROM serviceRequest WHERE id=%s"
+    cursor.execute(query, id)
+    conn.commit()
+    cursor.close()
 
 
 @app.put(
@@ -558,13 +552,12 @@ def delete_servicerequest(id: str) -> Union[None, ErrorModel]:
         '500': {'model': ErrorModel},
     },
 )
-def update_servicerequest(
-        id: str, body: Servicerequest = ...
-) -> Union[None, ErrorModel]:
-    """
-    Updates servicerequest by id
-    """
-    pass
+def update_servicerequest(id: str, body: Servicerequest = ...) -> Union[None, ErrorModel]:
+    cursor = conn.cursor()
+    query = "UPDATE serviceRequest SET date=%s, service=%s, description=%s, deviceType=%s, deviceId=%s WHERE id=%s"
+    cursor.execute(query, (body.date, body.service, body.description, body.deviceType, body.deviceId, id))
+    conn.commit()
+    cursor.close()
 
 
 @app.get(
