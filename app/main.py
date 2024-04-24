@@ -146,11 +146,11 @@ def find_camera_byid(id: str) -> Union[Camera, ErrorModel]:
     },
 )
 def delete_camera(id: str) -> Union[None, ErrorModel]:
-    """
-    Deletes camera by id
-    """
-    pass
-
+    cursor = conn.cursor()
+    query = "DELETE FROM camera WHERE id=%s"
+    cursor.execute(query, id)
+    conn.commit()
+    cursor.close()
 
 @app.put(
     '/camera/{id}',
@@ -163,10 +163,11 @@ def delete_camera(id: str) -> Union[None, ErrorModel]:
     },
 )
 def update_camera(id: str, body: Camera = ...) -> Union[None, ErrorModel]:
-    """
-    Updates camera by id
-    """
-    pass
+    cursor = conn.cursor()
+    query = "UPDATE camera SET name=%s, latitude=%s, longitude=%s, inService=%s, streamingUrl=%s WHERE id=%s"
+    cursor.execute(query, (body.name, body.latitude, body.longitude, body.inService, body.streamingUrl, id))
+    conn.commit()
+    cursor.close()
 
 
 @app.post(
@@ -299,8 +300,6 @@ def add_iotanalytics(body: Iotanalytics) -> Union[None, ErrorModel]:
 )
 def find_iotanalytics_byid(id: str) -> Union[Iotanalytics, ErrorModel]:
     data = iotAnalytics.find_one({"iotId": int(id)})
-    print()
-    print(data)
     if data is None:
         return ErrorModel(code=404, message="No IOT Analytics found")
 
