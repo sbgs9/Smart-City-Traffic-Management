@@ -201,7 +201,7 @@ def add_cameraimage(body: Cameraimage) -> Union[None, ErrorModel]:
     },
 )
 def find_cameraimage_byid(id: str) -> Union[Cameraimage, ErrorModel]:
-    cameraData = cameraImage.find_one({"cameraId": int(id)})
+    cameraData = cameraImage.find_one({"cameraId": id})
     if cameraData:
         cameraimage = Cameraimage(
             cameraId=cameraData['cameraId'],
