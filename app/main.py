@@ -153,8 +153,11 @@ def find_camera_byid(id: str) -> Union[Camera, ErrorModel]:
 )
 def delete_camera(id: str) -> Union[None, ErrorModel]:
     cursor = conn.cursor()
-    query = "DELETE FROM camera WHERE id=%s"
-    cursor.execute(query, id)
+    query = "DELETE FROM camera WHERE id = %s;"
+    result = cursor.execute(query, [id])
+    print(result)
+    if result is None:
+        return ErrorModel(code=404, message="CCTV not found")
     conn.commit()
     cursor.close()
 
@@ -399,7 +402,7 @@ def add_iotstation(body: Iotstation) -> Union[None, ErrorModel]:
 
 @app.get(
     '/iotstation/{id}',
-    response_model=Iotstation,
+    response_model=Union[Iotstation, ErrorModel],
     responses={
         '400': {'model': ErrorModel},
         '401': {'model': ErrorModel},
