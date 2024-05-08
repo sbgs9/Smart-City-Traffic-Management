@@ -22,8 +22,9 @@ from models import (
 import MySQLdb
 import pymongo
 
+# MYSQL_IP=13.57.253.133
 db_config = {
-    'host': os.environ.get("HOST_IP"),
+    'host': os.environ.get("MYSQL_IP"),
     'user': 'root',
     'passwd': 'cmpe-281',
     'db': 'smartCity',
@@ -32,7 +33,8 @@ db_config = {
 
 conn = MySQLdb.connect(**db_config)
 
-mongodbUrl = "mongodb://%s:27017/" % (os.environ.get("HOST_IP"))
+# MONGO_IP=54.67.39.165
+mongodbUrl = "mongodb://%s:27017/" % (os.environ.get("MONGO_IP"))
 client = pymongo.MongoClient(mongodbUrl, username='user', password='cmpe-281')
 db = client["smartCity"]
 
@@ -177,7 +179,7 @@ def update_camera(id: str, body: Camera = ...) -> Union[None, ErrorModel]:
 
 @app.post(
     '/cameraimage',
-    response_model=None,
+    response_model=Union[None, ErrorModel],
     responses={
         '400': {'model': ErrorModel},
         '401': {'model': ErrorModel},
@@ -196,7 +198,7 @@ def add_cameraimage(body: Cameraimage) -> Union[None, ErrorModel]:
 
 @app.get(
     '/cameraimage/{id}',
-    response_model=Cameraimage,
+    response_model=Union[Cameraimage, ErrorModel],
     responses={
         '400': {'model': ErrorModel},
         '401': {'model': ErrorModel},
@@ -250,7 +252,7 @@ def update_cameraimage(id: str, body: Cameraimage = ...) -> Union[None, ErrorMod
 
 @app.get(
     '/cameraimages',
-    response_model=List[Cameraimage],
+    response_model=Union[List[Cameraimage], ErrorModel],
     responses={
         '400': {'model': ErrorModel},
         '401': {'model': ErrorModel},
@@ -273,7 +275,7 @@ def get_cameraimage_list() -> Union[List[Cameraimage], ErrorModel]:
 
 @app.post(
     '/iotanalytics',
-    response_model=None,
+    response_model=Union[None, ErrorModel],
     responses={
         '400': {'model': ErrorModel},
         '401': {'model': ErrorModel},
@@ -350,7 +352,7 @@ def update_iotanalytics(id: str, body: Iotanalytics = ...) -> Union[None, ErrorM
 
 @app.get(
     '/iotanalyticss',
-    response_model=List[Iotanalytics],
+    response_model=Union[List[Iotanalytics], ErrorModel],
     responses={
         '400': {'model': ErrorModel},
         '401': {'model': ErrorModel},
@@ -377,7 +379,7 @@ def get_iotanalytics_list() -> Union[List[Iotanalytics], ErrorModel]:
 
 @app.post(
     '/iotstation',
-    response_model=None,
+    response_model=Union[None, ErrorModel],
     responses={
         '400': {'model': ErrorModel},
         '401': {'model': ErrorModel},
@@ -454,7 +456,7 @@ def update_iotstation(id: str, body: Iotstation = ...) -> Union[None, ErrorModel
 
 @app.get(
     '/iotstations',
-    response_model=List[Iotstation],
+    response_model=Union[List[Iotstation], ErrorModel],
     responses={
         '400': {'model': ErrorModel},
         '401': {'model': ErrorModel},
@@ -483,7 +485,7 @@ def get_iotstation_list() -> Union[List[Iotstation], ErrorModel]:
 
 @app.post(
     '/servicerequest',
-    response_model=None,
+    response_model=Union[None, ErrorModel],
     responses={
         '400': {'model': ErrorModel},
         '401': {'model': ErrorModel},
@@ -503,7 +505,7 @@ def add_servicerequest(body: Servicerequest) -> Union[None, ErrorModel]:
 
 @app.get(
     '/servicerequest/{id}',
-    response_model=Servicerequest,
+    response_model=Union[Servicerequest, ErrorModel],
     responses={
         '400': {'model': ErrorModel},
         '401': {'model': ErrorModel},
@@ -565,7 +567,7 @@ def update_servicerequest(id: str, body: Servicerequest = ...) -> Union[None, Er
 
 @app.get(
     '/servicerequests',
-    response_model=List[Servicerequest],
+    response_model=Union[List[Servicerequest], ErrorModel],
     responses={
         '400': {'model': ErrorModel},
         '401': {'model': ErrorModel},
