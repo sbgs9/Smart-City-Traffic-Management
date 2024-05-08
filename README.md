@@ -17,7 +17,7 @@ docker run --name cmpe281-mysql -e MYSQL_ROOT_PASSWORD=cmpe-281 -p 3306:3306 -v 
 After that, connect through IDE or install mysql and connect with:
 
 ```
-mysql --host=127.0.0.1 --port=3307 -u root -p
+mysql --host=127.0.0.1 --port=3306 -u root -p
 ```
 
 For sample data, you can run the commands `createTables.sql` and `populateTable.sql` in sqlScripts.

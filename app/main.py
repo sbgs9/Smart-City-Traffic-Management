@@ -81,7 +81,7 @@ def add_camera(body: Camera) -> Union[None, ErrorModel]:
 
 @app.get(
     '/cameras',
-    response_model=List[Camera],
+    response_model=Union[List[Camera], ErrorModel],
     responses={
         '400': {'model': ErrorModel},
         '401': {'model': ErrorModel},
@@ -95,7 +95,8 @@ def get_camera_list() -> Union[List[Camera], ErrorModel]:
     items = cursor.fetchall()
     cursor.close()
 
-    if items is None:
+    print(items)
+    if len(items) == 0:
         return ErrorModel(code=404, message="CCTVs not found")
 
     cameras = []
@@ -115,7 +116,7 @@ def get_camera_list() -> Union[List[Camera], ErrorModel]:
 
 @app.get(
     '/camera/{id}',
-    response_model=Camera,
+    response_model=Union[Camera, ErrorModel],
     responses={
         '400': {'model': ErrorModel},
         '401': {'model': ErrorModel},
@@ -129,10 +130,13 @@ def find_camera_byid(id: str) -> Union[Camera, ErrorModel]:
     cursor.execute(query, [id])
     item = cursor.fetchone()
     cursor.close()
+    print(item)
     if item is None:
+        print("Printing 404")
         return ErrorModel(code=404, message="CCTV not found")
-    return Camera(id=item[0], name=item[1], latitude=item[2], longitude=item[3], inService=bool(item[4]),
-                  streamingUrl=item[5])
+    else:
+        return Camera(id=item[0], name=item[1], latitude=item[2], longitude=item[3], inService=bool(item[4]),
+                      streamingUrl=item[5])
 
 
 @app.delete(
@@ -288,7 +292,7 @@ def add_iotanalytics(body: Iotanalytics) -> Union[None, ErrorModel]:
 
 @app.get(
     '/iotanalytics/{id}',
-    response_model=Iotanalytics,
+    response_model=Union[List[Iotanalytics], ErrorModel],
     responses={
         '400': {'model': ErrorModel},
         '401': {'model': ErrorModel},
@@ -296,22 +300,21 @@ def add_iotanalytics(body: Iotanalytics) -> Union[None, ErrorModel]:
         '500': {'model': ErrorModel},
     },
 )
-def find_iotanalytics_byid(id: str) -> Union[Iotanalytics, ErrorModel]:
-    data = iotAnalytics.find_one({"iotId": int(id)})
-    if data is None:
+def find_iotanalytics_byid(id: str) -> Union[List[Iotanalytics], ErrorModel]:
+    iotanalytics = []
+    for i in iotAnalytics.find({"iotId": id}):
+        iot = Iotanalytics(
+            iotId=i['iotId'],
+            timestamp=i['timestamp'],
+            totalFlow=i['totalFlow'],
+            avgOccupancy=i['avgOccupancy'],
+            avgSpeed=i['avgSpeed'],
+            incidents=i['incidents']
+        )
+        iotanalytics.append(iot)
+    if not iotanalytics:
         return ErrorModel(code=404, message="No IOT Analytics found")
-
-    iot = Iotanalytics(
-        iotId=data['iotId'],
-        timestamp=data['timestamp'],
-        totalFlow=data['totalFlow'],
-        avgOccupancy=data['avgOccupancy'],
-        avgSpeed=data['avgSpeed'],
-        incidents=data['incidents']
-    )
-
-    return iot
-
+    return iotanalytics
 
 @app.delete(
     '/iotanalytics/{id}',
