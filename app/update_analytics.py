@@ -13,7 +13,7 @@ station_data_handler = pa.Station5MinDataHandler()
 chp_data_handler = pa.CHPDailyIncidentDataHandler()
 
 # Defining a start date, end date and a district_id
-start_date, end_date, district_id = date.today() - timedelta(days=7), date.today() - timedelta(days=1), 4
+start_date, end_date, district_id = date.today() - timedelta(days=1), date.today() - timedelta(days=1), 4
 
 # Downloading data between start date and end date from the 3rd district
 # data_chunks = data_handler.load_between(from_date=start_date, to_date=end_date, district=district_id)
@@ -34,9 +34,6 @@ chp_df = pd.concat(chp_df)
 chp_data = chp_df.to_dict(orient='records')
 
 
-# for record in chp_data:
-#     print(record['timestamp'].to_pydatetime().date())
-
 def get_incidents_by_timestamp(timestamp):
     num_incidents = 0
     for record in chp_data:
@@ -49,17 +46,18 @@ subset_df = station_df[['station_id', 'timestamp', 'total_flow', 'avg_occupancy'
 data = subset_df.to_dict(orient='records')
 print('Adding to database!')
 for record in data:
-    curr_data = models.Iotanalytics(
-        iotId=record['station_id'],
-        timestamp=str(record['timestamp']),
-        totalFlow=record['total_flow'],
-        avgOccupancy=record['avg_occupancy'],
-        avgSpeed=record['avg_speed'],
-        incidents=get_incidents_by_timestamp(record['timestamp'])
-    )
-    main.add_iotanalytics(curr_data)
-    print('Added entry!')
+    curr_time = record['timestamp'].to_pydatetime()
+    if (curr_time.hour == 6 and curr_time.minute == 0) or (curr_time.hour == 12 and curr_time.minute == 0) or (
+            curr_time.hour == 18 and curr_time.minute == 0):
+        curr_data = models.Iotanalytics(
+            iotId=record['station_id'],
+            timestamp=str(record['timestamp']),
+            totalFlow=record['total_flow'],
+            avgOccupancy=record['avg_occupancy'],
+            avgSpeed=record['avg_speed'],
+            incidents=get_incidents_by_timestamp(record['timestamp'])
+        )
+        # print(curr_data)
+        main.add_iotanalytics(curr_data)
+        print('Added entry!')
 print('Finished adding to database!')
-
-# subset_4000_df = subset_df.loc[subset_df['station_id'] == 400000]
-# print(subset_4000_df.to_dict(orient='records'))
